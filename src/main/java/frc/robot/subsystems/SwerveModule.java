@@ -1,47 +1,55 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SwerveModule extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  public SwerveModule() {}
+import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public CommandBase exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
+public class SwerveModule extends SubsystemBase {
+  
+  private final TalonFX m_turnMotor;
+  private final TalonFX m_driveMotor;
+  private final CANCoder m_CANCoder;
+  private final double turnMotorOffset;
+
+  private final PIDController turnPID;
+
+  public SwerveModule() {
+    m_turnMotor = new TalonFX(RobotMap.Swerve.Mod0.driveMotorID);
+    m_driveMotor = new TalonFX(RobotMap.Swerve.Mod0.turnMotorID);
+    m_CANCoder = new CANCoder(RobotMap.Swerve.Mod0.CANCoderID);
+    turnMotorOffset = Constants.Swerve.mod0TurnOffset;
+
+    turnPID = new PIDController(Constants.Swerve.turnKP, Constants.Swerve.turnKI, Constants.Swerve.turnKD);
+    turnPID.enableContinuousInput(0, 360);
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+  public void setSpeed(double speed){
+    m_driveMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setAngle(double desiredAngle){
+    m_turnMotor.setSelectedSensorPosition(turnPID.calculate(getAngle(), desiredAngle));
+  }
+
+  public double getAngle(){
+    return m_CANCoder.getAbsolutePosition();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
   }
 
   @Override
   public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+    
   }
 }
