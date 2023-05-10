@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -27,5 +29,7 @@ public final class Constants {
     public static final double angleKP = 1;
     public static final double angleKI = 0;
     public static final double angleKD = 0;
+
+    public static final Rotation2d swerveMod1AngleOffset = new Rotation2d(Math.toRadians(0));
   }
 }

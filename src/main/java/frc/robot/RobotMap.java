@@ -1,6 +1,7 @@
 package frc.robot;
 
-import frc.robot.Utils.SwerveModelConstants;
+import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.Utils.SwerveModuleConstants;
 
 public class RobotMap {
     
@@ -10,6 +11,8 @@ public class RobotMap {
             public static final int driveMotorID = 0;
             public static final int turnMotorID = 0;
             public static final int CANCoderID = 0;
+            public static final Rotation2d angleOffset = Constants.Swerve.swerveMod1AngleOffset;
+            public static final SwerveModuleConstants swerveMod = new SwerveModuleConstants(driveMotorID, turnMotorID, CANCoderID, angleOffset);
         }
     }
 }
