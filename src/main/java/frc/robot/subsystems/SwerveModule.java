@@ -36,7 +36,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public void setAngle(double desiredAngle){
-    m_turnMotor.setSelectedSensorPosition(turnPID.calculate(getAngle(), desiredAngle));
+    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle() - turnMotorOffset, desiredAngle));
   }
 
   public double getAngle(){
