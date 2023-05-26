@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 
 public class SwerveModule extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -23,13 +24,35 @@ public class SwerveModule extends SubsystemBase {
   private final PIDController SwervePID;
 
   public SwerveModule() {
-    m_turnMotor = new TalonFX(0);
-    m_driveMotor = new TalonFX(0);
-    m_CANcoder = new CANcoder(0);
+    m_turnMotor = new TalonFX(RobotMap.Swerve.Module0.turnMotorID);
+    m_driveMotor = new TalonFX(RobotMap.Swerve.Module0.driveMotorID);
+    m_CANcoder = new CANcoder(RobotMap.Swerve.Module0.CANcoderID);
 
     SwervePID = new PIDController(Constants.SwerveModule.SwerveP, Constants.SwerveModule.SwerveI, Constants.SwerveModule.SwerveD);
 
   }
+
+  public void setSpeed(){
+    m_driveMotor.set(ControlMode.PercentOutput, SwervePID.calculate(0,0));
+  }
+  //pid needs setpoint and measurment
+
+  public void getAngle(){
+
+  }
+
+  public void setAngle(){
+    
+  }
+
+  public void getPosition(){
+
+  }
+
+  //do the get stuff and set stuff
+  //cancoder offset thing because 0 is not 0
+  // do all the invert stuff
+  //Look at old code to figure out how stuff works because this is confusing
 
   /**
    * Example command factory method.
