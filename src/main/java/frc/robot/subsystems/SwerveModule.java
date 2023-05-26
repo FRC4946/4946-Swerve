@@ -4,21 +4,30 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenixpro.hardware.CANcoder;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class SwerveModule extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   private final TalonFX m_turnMotor;
   private final TalonFX m_driveMotor;
+  private final CANcoder m_CANcoder;
+  private final PIDController SwervePID;
 
   public SwerveModule() {
     m_turnMotor = new TalonFX(0);
     m_driveMotor = new TalonFX(0);
+    m_CANcoder = new CANcoder(0);
+
+    SwervePID = new PIDController(Constants.SwerveModule.SwerveP, Constants.SwerveModule.SwerveI, Constants.SwerveModule.SwerveD);
 
   }
 
@@ -36,6 +45,7 @@ public class SwerveModule extends SubsystemBase {
         });
   }
 
+  
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
