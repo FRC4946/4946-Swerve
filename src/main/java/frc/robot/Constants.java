@@ -26,10 +26,12 @@ public final class Constants {
     public static final double turnKI = 0;
     public static final double turnKD = 0;
 
-    public static final double angleKP = 1;
-    public static final double angleKI = 0;
-    public static final double angleKD = 0;
+    public static final double driveKP = 1;
+    public static final double driveKI = 0;
+    public static final double driveKD = 0;
 
     public static final Rotation2d swerveMod1AngleOffset = new Rotation2d(Math.toRadians(0));
+
+    public static final double maxSpeed = 10.23;
   }
 }

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +23,7 @@ public class SwerveModule extends SubsystemBase {
   private final Rotation2d turnMotorOffset;
 
   private final PIDController turnPID;
+  private final PIDController drivePID;
 
   public SwerveModule(SwerveModuleConstants swerveModConstants) {
     m_driveMotor = new TalonFX(swerveModConstants.driveMotorID);
@@ -30,15 +32,27 @@ public class SwerveModule extends SubsystemBase {
     this.turnMotorOffset = swerveModConstants.angleOffset;
 
     turnPID = new PIDController(Constants.Swerve.turnKP, Constants.Swerve.turnKI, Constants.Swerve.turnKD);
+    drivePID = new PIDController(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
     turnPID.enableContinuousInput(0, 360);
   }
 
-  public void setSpeed(double speed){
-    m_driveMotor.set(ControlMode.PercentOutput, speed);
+  public void setSpeed(SwerveModuleState state, boolean openLoop){
+    if(openLoop){
+      double desiredSpeed = state.speedMetersPerSecond;
+      m_driveMotor.set(ControlMode.PercentOutput, desiredSpeed);
+    } else {
+      double desiredSpeed = state.speedMetersPerSecond / Constants.Swerve.maxSpeed;
+      m_driveMotor.set(ControlMode.PercentOutput, desiredSpeed);
+    }
   }
 
-  public void setAngle(double desiredAngle){
-    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle() - turnMotorOffset.getDegrees(), desiredAngle));
+  public void setAngle(SwerveModuleState state){
+    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle() - turnMotorOffset.getDegrees(), state.angle.getDegrees()));
+  }
+
+  public void setState(SwerveModuleState desiredState){
+    setAngle(desiredState);
+    setSpeed(desiredState, false);
   }
 
   public double getAngle(){
