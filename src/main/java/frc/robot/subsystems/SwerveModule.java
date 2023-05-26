@@ -38,7 +38,7 @@ public class SwerveModule extends SubsystemBase {
 
   public void setSpeed(SwerveModuleState state, boolean openLoop){
     if(openLoop){
-      double desiredSpeed = state.speedMetersPerSecond;
+      double desiredSpeed = drivePID.calculate(getSpeed(true), state.speedMetersPerSecond);
       m_driveMotor.set(ControlMode.PercentOutput, desiredSpeed);
     } else {
       double desiredSpeed = state.speedMetersPerSecond / Constants.Swerve.maxSpeed;
@@ -57,6 +57,14 @@ public class SwerveModule extends SubsystemBase {
 
   public double getAngle(){
     return m_CANCoder.getAbsolutePosition();
+  }
+  public double getSpeed(boolean returnInMPS){
+    if(returnInMPS){
+      double mPS = (m_driveMotor.getSelectedSensorVelocity()*10*Constants.Swerve.wheelCircumference)/2048;
+      return mPS;
+    } else {
+    return m_driveMotor.getSelectedSensorVelocity();
+    }
   }
 
   @Override
