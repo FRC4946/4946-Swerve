@@ -32,7 +32,7 @@ public final class Constants {
 
     public static final Rotation2d swerveMod1AngleOffset = new Rotation2d(Math.toRadians(0));
 
-    public static final double maxSpeed = 10.23;
+    public static final double maxSpeed = 4;
 
     public static final double wheelDiameter = 0; //this value should be in meters
     public static final double wheelCircumference = wheelDiameter * Math.PI;

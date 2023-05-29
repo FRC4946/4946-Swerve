@@ -5,28 +5,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 
 public class Swerve extends SubsystemBase {
-  
+      
+  public SwerveModule mod0;
+
   public Swerve() {
-    //vroom vroom drive
-    /*░░░░▄▄▄▄▀▀▀▀▀▀▀▀▄▄▄▄▄▄
-░░░░█░░░░▒▒▒▒▒▒▒▒▒▒▒▒░░▀▀▄
-░░░█░░░▒▒▒▒▒▒░░░░░░░░▒▒▒░░█
-░░█░░░░░░▄██▀▄▄░░░░░▄▄▄░░░█
-░▀▒▄▄▄▒░█▀▀▀▀▄▄█░░░██▄▄█░░░█
-█▒█▒▄░▀▄▄▄▀░░░░░░░░█░░░▒▒▒▒▒█
-█▒█░█▀▄▄░░░░░█▀░░░░▀▄░░▄▀▀▀▄▒█
-░█▀▄░█▄░█▀▄▄░▀░▀▀░▄▄▀░░░░█░░█
-░░█░░▀▄▀█▄▄░█▀▀▀▄▄▄▄▀▀█▀██░█
-░░░█░░██░░▀█▄▄▄█▄▄█▄████░█
-░░░░█░░░▀▀▄░█░░░█░███████░█
-░░░░░▀▄░░░▀▀▄▄▄█▄█▄█▄█▄▀░░█
-░░░░░░░▀▄▄░▒▒▒▒░░░░░░░░░░█
-░░░░░░░░░░▀▀▄▄░▒▒▒▒▒▒▒▒▒▒░█
-░░░░░░░░░░░░░░▀▄▄▄▄▄░░░░░█
-     */
+    mod0 = new SwerveModule(RobotMap.Swerve.Mod0.swerveMod);
   }
+
+
 
   @Override
   public void periodic() {

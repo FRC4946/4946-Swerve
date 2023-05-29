@@ -6,7 +6,6 @@ import frc.robot.Utils.SwerveModuleConstants;
 public class RobotMap {
     
     public static final class Swerve {
-
         public static final class Mod0 {
             public static final int driveMotorID = 0;
             public static final int turnMotorID = 0;

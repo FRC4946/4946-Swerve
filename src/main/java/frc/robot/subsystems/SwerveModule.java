@@ -12,6 +12,8 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Utils.SwerveModuleConstants;
 
+import javax.swing.JSpinner.DefaultEditor;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -25,6 +27,9 @@ public class SwerveModule extends SubsystemBase {
   private final PIDController turnPID;
   private final PIDController drivePID;
 
+  private final SwerveModuleState driveForward;
+  private final Rotation2d defaultAngle;
+
   public SwerveModule(SwerveModuleConstants swerveModConstants) {
     m_driveMotor = new TalonFX(swerveModConstants.driveMotorID);
     m_turnMotor = new TalonFX(swerveModConstants.turnMotorID);
@@ -34,6 +39,9 @@ public class SwerveModule extends SubsystemBase {
     turnPID = new PIDController(Constants.Swerve.turnKP, Constants.Swerve.turnKI, Constants.Swerve.turnKD);
     drivePID = new PIDController(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
     turnPID.enableContinuousInput(0, 360);
+
+    defaultAngle = new Rotation2d(0);
+    driveForward = new SwerveModuleState(Constants.Swerve.maxSpeed, defaultAngle);
   }
 
   public void setSpeed(SwerveModuleState state, boolean openLoop){
@@ -47,7 +55,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public void setAngle(SwerveModuleState state){
-    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle() - turnMotorOffset.getDegrees(), state.angle.getDegrees()));
+    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle(), state.angle.getDegrees()));
   }
 
   public void setState(SwerveModuleState desiredState){
@@ -56,8 +64,9 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public double getAngle(){
-    return m_CANCoder.getAbsolutePosition();
+    return m_CANCoder.getAbsolutePosition() - turnMotorOffset.getDegrees();
   }
+  
   public double getSpeed(boolean returnInMPS){
     if(returnInMPS){
       double mPS = (m_driveMotor.getSelectedSensorVelocity()*10*Constants.Swerve.wheelCircumference)/2048;
