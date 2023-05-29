@@ -5,8 +5,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenixpro.hardware.CANcoder;
+import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -20,33 +21,31 @@ public class SwerveModule extends SubsystemBase {
 
   private final TalonFX m_turnMotor;
   private final TalonFX m_driveMotor;
-  private final CANcoder m_CANcoder;
+  private final CANCoder m_CANcoder;
   private final PIDController SwervePID;
 
   public SwerveModule() {
     m_turnMotor = new TalonFX(RobotMap.Swerve.Module0.turnMotorID);
     m_driveMotor = new TalonFX(RobotMap.Swerve.Module0.driveMotorID);
-    m_CANcoder = new CANcoder(RobotMap.Swerve.Module0.CANcoderID);
+    m_CANcoder = new CANCoder(RobotMap.Swerve.Module0.CANcoderID);
 
     SwervePID = new PIDController(Constants.SwerveModule.SwerveP, Constants.SwerveModule.SwerveI, Constants.SwerveModule.SwerveD);
+    SwervePID.enableContinuousInput(0, 360);
 
+    m_driveMotor.setNeutralMode(NeutralMode.Brake);
+    m_turnMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void setSpeed(){
-    m_driveMotor.set(ControlMode.PercentOutput, SwervePID.calculate(0,0));
-  }
-  //pid needs setpoint and measurment
-
-  public void getAngle(){
-
+  public void setSpeed(double speed){
+    m_driveMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void setAngle(){
-    
+  public double getAngle(){
+    return m_CANcoder.getAbsolutePosition() - Constants.SwerveModule.CANCoderOffset;
   }
 
-  public void getPosition(){
-
+  public void setAngle(double setPoint){
+    m_turnMotor.set(ControlMode.PercentOutput, SwervePID.calculate(getAngle(), setPoint));
   }
 
   //do the get stuff and set stuff
