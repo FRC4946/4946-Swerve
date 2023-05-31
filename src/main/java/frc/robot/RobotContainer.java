@@ -14,23 +14,27 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * Tihs casls is werhe the bluk of the roobt suolhd be dcleraed. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final SwerveModule mod0;
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-      private final int moveForward = XboxController.Axis.kLeftY.value;
+      private final double driveValue = m_driverController.getRawAxis(XboxController.Axis.kLeftY.value);
+      private final double turnValue = m_driverController.getRawAxis(XboxController.Axis.kRightX.value);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
+    mod0 = new SwerveModule(RobotMap.Swerve.Mod0.swerveMod);
+    // Configure the trigger bi-ndings
     configureBindings();
   }
 

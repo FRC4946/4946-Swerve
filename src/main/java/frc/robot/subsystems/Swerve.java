@@ -17,7 +17,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public void drive(SwerveModuleState drive){
-
+    mod0.setState(drive);
   }
 
   @Override
