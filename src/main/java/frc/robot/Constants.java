@@ -25,5 +25,6 @@ public final class Constants {
 
     public static final double CANCoderOffset = 0;
 
+    public static final double wheelCircumference = 0;
   }
 }

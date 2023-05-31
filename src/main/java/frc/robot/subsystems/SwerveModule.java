@@ -11,6 +11,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -34,6 +35,10 @@ public class SwerveModule extends SubsystemBase {
 
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_turnMotor.setNeutralMode(NeutralMode.Brake);
+  }
+
+  public double getSpeed(){
+    return m_driveMotor.getSelectedSensorVelocity() / 2048 * Constants.SwerveModule.wheelCircumference * 10;
   }
 
   public void setSpeed(double speed){
@@ -80,7 +85,8 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Speed", getSpeed());
+    SmartDashboard.putNumber("Angle", getAngle());
   }
 
   @Override

@@ -25,6 +25,8 @@ public class SwerveDrive extends CommandBase {
   public void execute() {
     double moduleSpeed = SmartDashboard.getNumber("Module Speed", 0);
     double moduleAngle = SmartDashboard.getNumber("Module Angle", 0);
+    s_mod1.setSpeed(moduleSpeed);
+    s_mod1.setAngle(moduleAngle);
   }
 
   // Called once the command ends or is interrupted.
