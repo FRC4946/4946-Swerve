@@ -3,16 +3,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
 import frc.robot.Utils.SwerveModuleConstants;
-
-import javax.swing.JSpinner.DefaultEditor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -54,8 +48,22 @@ public class SwerveModule extends SubsystemBase {
     }
   }
 
+  public void setSpeed(double speed, boolean openLoop){
+    if(openLoop){
+      double desiredSpeed = drivePID.calculate(getSpeed(true), speed);
+      m_driveMotor.set(ControlMode.PercentOutput, desiredSpeed);
+    } else {
+      double desiredSpeed = speed / Constants.Swerve.maxSpeed;
+      m_driveMotor.set(ControlMode.PercentOutput, desiredSpeed);
+    }
+  }
+
   public void setAngle(SwerveModuleState state){
     m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle(), state.angle.getDegrees()));
+  }
+
+  public void setAngle(double angle){
+    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle(), angle));
   }
 
   public void setState(SwerveModuleState desiredState){
