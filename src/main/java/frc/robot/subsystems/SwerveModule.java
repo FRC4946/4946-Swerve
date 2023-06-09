@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -23,6 +24,8 @@ public class SwerveModule extends SubsystemBase {
 
   private final SwerveModuleState driveForward;
   private final Rotation2d defaultAngle;
+
+  public double speed;
 
   public SwerveModule(SwerveModuleConstants swerveModConstants) {
     m_driveMotor = new TalonFX(swerveModConstants.driveMotorID);
@@ -62,8 +65,12 @@ public class SwerveModule extends SubsystemBase {
     m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle(), state.angle.getDegrees()));
   }
 
-  public void setAngle(double angle){
-    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle(), angle));
+  public void setAngle(Rotation2d angle){
+    m_turnMotor.set(ControlMode.PercentOutput, turnPID.calculate(getAngle(), angle.getDegrees()));
+  }
+
+  public void setAngle(double speed){
+    m_turnMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setState(SwerveModuleState desiredState){
@@ -86,7 +93,7 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+    SmartDashboard.putNumber("Speed", speed);
   }
 
   @Override

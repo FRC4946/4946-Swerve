@@ -34,9 +34,6 @@ public class RobotContainer {
   public RobotContainer() {
     mod0 = new SwerveModule(RobotMap.Swerve.Mod0.swerveMod);
     // Configure the trigger bi-ndings
-
-    mod0.setDefaultCommand(new DashboardSwerDrive(mod0));
-    configureBindings();
   }
 
   /**
@@ -49,7 +46,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    mod0.setDefaultCommand(new DashboardSwerDrive(mod0, m_driverController));
   }
 
   /**
