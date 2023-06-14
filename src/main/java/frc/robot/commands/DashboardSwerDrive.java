@@ -13,6 +13,7 @@ public class DashboardSwerDrive extends CommandBase {
   public DashboardSwerDrive(SwerveModule mod0, CommandXboxController m_driverController) {
     this.mod0 = mod0;
     this.driver = m_driverController;
+  
     addRequirements(mod0);
   }
 
@@ -25,7 +26,7 @@ public class DashboardSwerDrive extends CommandBase {
   public void execute() {
     double speed = driver.getRawAxis(XboxController.Axis.kLeftY.value);
     double rotate = driver.getRawAxis(XboxController.Axis.kRightX.value);
-    mod0.setSpeed(speed, true);
+    mod0.setSpeed(speed, false);
     mod0.setAngle(rotate);
   }
 
