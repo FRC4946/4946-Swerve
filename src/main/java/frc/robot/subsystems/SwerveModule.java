@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 import frc.robot.Utils.SwerveModuleConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -28,9 +29,9 @@ public class SwerveModule extends SubsystemBase {
   public double speed;
 
   public SwerveModule(SwerveModuleConstants swerveModConstants) {
-    m_driveMotor = new TalonFX(swerveModConstants.driveMotorID);
-    m_turnMotor = new TalonFX(swerveModConstants.turnMotorID);
-    m_CANCoder = new CANCoder(swerveModConstants.CANCoderID);
+    m_driveMotor = new TalonFX(swerveModConstants.driveMotorID, RobotMap.CAN.CANivoreID);
+    m_turnMotor = new TalonFX(swerveModConstants.turnMotorID, RobotMap.CAN.CANivoreID);
+    m_CANCoder = new CANCoder(swerveModConstants.CANCoderID, RobotMap.CAN.CANivoreID);
     this.turnMotorOffset = swerveModConstants.angleOffset;
 
     turnPID = new PIDController(Constants.Swerve.turnKP, Constants.Swerve.turnKI, Constants.Swerve.turnKD);

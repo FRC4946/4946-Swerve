@@ -14,4 +14,8 @@ public class RobotMap {
             public static final SwerveModuleConstants swerveMod = new SwerveModuleConstants(driveMotorID, turnMotorID, CANCoderID, angleOffset);
         }
     }
+
+    public static final class CAN {
+        public static final String CANivoreID = "Drivetrain CANivore";
+    }
 }
